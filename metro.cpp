@@ -14,36 +14,26 @@ private:
 public:
     list<T> path;
 
-    void Edge(T u, T v, float dist, bool isBidirex=true)
+    void Edge(T u, T v, float dist)
     {
         adjList[u].push_back(make_pair(v,dist));
-        if(isBidirex)
-        {
-            adjList[v].push_back(make_pair(u,dist));
-        }
+        adjList[v].push_back(make_pair(u,dist));
     }
 
 
-    void DijkstraGetShortestPathTo(T destination, map<T,T> &prev)
+    void Path(T destination, map<T,T> &prev)
     {
         for( ; destination != ""; destination = prev[destination])
         {
             path.push_back(destination);
         }
         path.reverse();
-        cout<<"\t\t\t";
-        //--
+
         copy(path.begin(), path.end(), ostream_iterator<T>(cout, "\n\t\t\t"));
     }
 
-    void dijsktraSSSP(T,map<T,float> &dist, map<T,T> &prev);
-
-   
-
+    void dijsktra(T,map<T,float> &dist, map<T,T> &prev);
     bool check(string, string);
-    void calcPrice(string, string);
-
-          
 };
 
 int main(){
@@ -55,26 +45,25 @@ int main(){
     
     map<string,float> dist;
     map<string,string> prev;
-    string sourcestn, deststn;
+    string src, dest;
     cout<<endl<<endl<<endl;
 
     
     cout<<"Enter source station: ";
-    getline(cin,sourcestn);
+    getline(cin,src);
     cout<<endl;
 
     cout<<"Enter destination station: ";
-    getline(cin,deststn);
+    getline(cin,dest);
     
 
     
-    Metro.dijsktraSSSP(sourcestn, dist, prev);
+    Metro.dijsktra(src, dist, prev);
     
     
-    cout<<"Distance from "<<sourcestn<<" to "<<deststn<<" - "<<dist[deststn]<<" Kms"<<endl;
+    cout<<"Distance from "<<src<<" station to "<<dest<<" station - "<<dist[dest]<<" Kms"<<endl;
     cout<<endl<<"\t\tPath: "<<endl;
-    Metro.DijkstraGetShortestPathTo(deststn,prev);
-    Metro.calcPrice(sourcestn,deststn);
+    Metro.Path(dest,prev);
     cout<<endl;
 
     return 0;
