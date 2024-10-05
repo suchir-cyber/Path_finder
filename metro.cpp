@@ -87,7 +87,7 @@ int main(){
     Metro.Edge("Habsiguda","Tarnaka",1.5);//5 to 6
     Metro.Edge("Tarnaka","Mettuguda",1.2);//6 to 7
     Metro.Edge("Mettuguda","Secunderabad east",2);//7 to 8
-    Metro.Edge("Secunderabad east","JBS parade ground",1.8);//8 to 9
+    Metro.Edge("Secunderabad east","Jbs parade ground",1.8);//8 to 9
     Metro.Edge("Jbs parade ground","Paradise",2.6);//9 to 10
     Metro.Edge("Paradise","Rasoolpura",1.1);//10 to 11
     Metro.Edge("Rasoolpura","Prakash nagar",1.1);//11 to 12
