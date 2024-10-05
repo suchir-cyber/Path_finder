@@ -37,20 +37,8 @@ public:
     }
 
     void dijsktraSSSP(T,map<T,float> &dist, map<T,T> &prev);
-    void makedotfile();
-    vector<string> split (const string &s, char delim)
-    {
-        vector<string> result;
-        stringstream ss (s);
-        string item;
 
-        while (getline (ss, item, delim))
-        {
-            result.push_back (item);
-        }
-
-        return result;
-    }
+   
 
     bool check(string, string);
     void calcPrice(string, string);
