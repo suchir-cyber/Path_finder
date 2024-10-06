@@ -36,6 +36,21 @@ public:
     bool check(string, string);
 };
 
+template<typename T>
+bool Graph<T>::check(string source, string destination)
+{
+    int count = 0;
+    for (auto it = path.begin(); it != path.end(); ++it)
+    {
+        if(*it==source) count++
+        else if(*it==dest) count++;
+    }
+    if(count == 2) return true;
+    else return false;
+}
+
+
+
 int main(){
    
     
