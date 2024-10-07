@@ -10,7 +10,7 @@ class Graph
 {
 private:
     map<T, list<pair<T,float>>> adjList;
-
+    unordered_set<T> stops; 
 public:
     list<T> path;
 
@@ -18,6 +18,8 @@ public:
     {
         adjList[u].push_back(make_pair(v,dist));
         adjList[v].push_back(make_pair(u,dist));
+        stops.insert(u);
+        stops.insert(v);
     }
 
 
@@ -39,14 +41,32 @@ public:
 template<typename T>
 bool Graph<T>::check(string source, string destination)
 {
-    int count = 0;
-    for (auto it = path.begin(); it != path.end(); ++it)
-    {
-        if(*it==source) count++
-        else if(*it==dest) count++;
+    // int count = 0;
+    // for (auto it = path.begin(); it != path.end(); ++it)
+    // {
+    //     if(*it==source) count++
+    //     else if(*it==dest) count++;
+    // }
+    // if(count == 2) return true;
+    // else return false;
+    for (char& c : source) 
+    {  
+        if(!isalpha(static_cast<unsigned char>(c)))
+        {
+            return false;
+        }
+        c = tolower(c);
     }
-    if(count == 2) return true;
-    else return false;
+    for (char& c : destination) 
+    {
+        if(!isalpha(static_cast<unsigned char>(c)))
+        {
+            return false;
+        }
+        c = tolower(c);
+    }
+    return (stops.find(source)!=stops.end() && stops.find(destination)!=stops.end());
+    
 }
 
 
@@ -72,7 +92,7 @@ int main(){
     Metro.Edge("Erragadda","Esi hospital",1.6);//8 to 9
     Metro.Edge("Esi hospital","Sr nagar",0.7);//9 to 10
     Metro.Edge("Sr nagar","Ameerpet",0.6);//10 to 11
-    Metro.Edge("Ameerpe","Punjagutta",1.1);//11 to 12
+    Metro.Edge("Ameerpet","Punjagutta",1.1);//11 to 12
     Metro.Edge("Punjagutta","Irrum manzil",1.3);//12 to 13
     Metro.Edge("Irrum manzil","Khairatabad",2.2);//13 to 14
     Metro.Edge("Khairatabad","Lakdi ka pul",1.6);//14 to 15
@@ -149,15 +169,19 @@ int main(){
     cout<<"Enter destination station: ";
     getline(cin,dest);
     
-
+    if(Metro.check(src,dest))
+    {
+        Metro.dijsktra(src, dist, prev);
+        cout<<"Distance from "<<src<<" station to "<<dest<<" station - "<<dist[dest]<<" Kms"<<endl;
+        cout<<endl<<"\t\tPath: "<<endl;
+        Metro.Path(dest,prev);
+        cout<<endl;
+    }
+    else
+    {
+        cout<<"INVALID SOURCE or DESTINATION";
+    }
     
-    Metro.dijsktra(src, dist, prev);
-    
-    
-    cout<<"Distance from "<<src<<" station to "<<dest<<" station - "<<dist[dest]<<" Kms"<<endl;
-    cout<<endl<<"\t\tPath: "<<endl;
-    Metro.Path(dest,prev);
-    cout<<endl;
 
     return 0;
 }
