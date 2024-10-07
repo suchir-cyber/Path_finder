@@ -39,6 +39,35 @@ public:
 };
 
 template<typename T>
+void Graph<T>::dijsktra(T,map<T,float> &dist, map<T,T> &prev){
+      set<pair<float,T>> st;
+      for(auto it:adjList){
+          dist[it.first] = 1e9; 
+          prev[it.first] = "";
+      }
+      dist[] = 0; //source distance should be updated to zero
+      st.insert(make_pair(0,));
+
+      while(!st.empty()){
+            auto it = *(st.begin());
+            st.erase(it);
+            float dist = it.first;
+            T node = it.second;
+            for(auto ele:adjList[node]){
+                 float adjweight = ele.second;
+                 float ajdnode = ele.first;
+                 if(dist + adjweight < dist[adjnode]){
+                      if(dist[adjnode] != 1e9) st.erase(make_pair(dist[adjnode],adjnode);
+                      dist[adjnode] = dist + adjweight;
+                      prev[adjnode] = node;
+                      st.insert(make_pair(dist[adjnode],adjnode);
+                 } 
+            }
+      }
+}
+
+
+template<typename T>
 bool Graph<T>::check(string source, string destination)
 {
     // int count = 0;
