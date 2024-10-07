@@ -39,14 +39,14 @@ public:
 };
 
 template<typename T>
-void Graph<T>::dijsktra(T,map<T,float> &dist, map<T,T> &prev){
+void Graph<T>::dijsktra(T src,map<T,float> &dist, map<T,T> &prev){
       set<pair<float,T>> st;
       for(auto it:adjList){
           dist[it.first] = 1e9; 
           prev[it.first] = "";
       }
-      dist[] = 0; //source distance should be updated to zero
-      st.insert(make_pair(0,));
+      dist[src] = 0; //source distance should be updated to zero
+      st.insert(make_pair(0,src));
 
       while(!st.empty()){
             auto it = *(st.begin());
