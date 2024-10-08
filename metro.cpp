@@ -3,19 +3,31 @@
 #include <algorithm>
 #include<map>
 #include<list>
+// #include<bits/stdc++.h>
+#include<set>
+#include <unordered_set>
+#include <iterator>
 using namespace std;
 template<typename T>
 
 class Graph
 {
-private:
+public:
     map<T, list<pair<T,float>>> adjList;
     unordered_set<T> stops; 
-public:
+
     list<T> path;
 
     void Edge(T u, T v, float dist)
-    {
+    {   
+        for (auto& x : u) { 
+            x = tolower(x); 
+        } 
+        
+        for (auto& x : v) { 
+            x = tolower(x); 
+        } 
+        cout<<u<<"          "<<v<<endl;
         adjList[u].push_back(make_pair(v,dist));
         adjList[v].push_back(make_pair(u,dist));
         stops.insert(u);
@@ -25,27 +37,31 @@ public:
 
     void Path(T destination, map<T,T> &prev)
     {
+        if (prev.find(destination) == prev.end()) {
+        cout << "Path not reachable" << endl;
+        return;
+    }
         for( ; destination != ""; destination = prev[destination])
         {
             path.push_back(destination);
         }
         path.reverse();
-
+        cout<<"\n\t\t\t";
         copy(path.begin(), path.end(), ostream_iterator<T>(cout, "\n\t\t\t"));
     }
 
     void dijsktra(T,map<T,float> &dist, map<T,T> &prev);
-    bool check(string, string);
+    bool check(string , string );
 };
 
 template<typename T>
-void Graph<T>::dijsktra(T src,map<T,float> &dist, map<T,T> &prev){
+void Graph<T>::dijsktra(T src,map<T,float> &distance, map<T,T> &prev){
       set<pair<float,T>> st;
       for(auto it:adjList){
-          dist[it.first] = 1e9; 
+          distance[it.first] = 1e9; 
           prev[it.first] = "";
       }
-      dist[src] = 0; //source distance should be updated to zero
+      distance[src] = 0; //source distance should be updated to zero
       st.insert(make_pair(0,src));
 
       while(!st.empty()){
@@ -55,12 +71,12 @@ void Graph<T>::dijsktra(T src,map<T,float> &dist, map<T,T> &prev){
             T node = it.second;
             for(auto ele:adjList[node]){
                  float adjweight = ele.second;
-                 float ajdnode = ele.first;
-                 if(dist + adjweight < dist[adjnode]){
-                      if(dist[adjnode] != 1e9) st.erase(make_pair(dist[adjnode],adjnode);
-                      dist[adjnode] = dist + adjweight;
+                 T adjnode = ele.first;
+                 if(dist + adjweight < distance[adjnode]){
+                      if(distance[adjnode] != 1e9) st.erase(make_pair(distance[adjnode],adjnode));
+                      distance[adjnode] = dist + adjweight;
                       prev[adjnode] = node;
-                      st.insert(make_pair(dist[adjnode],adjnode);
+                      st.insert(make_pair(distance[adjnode],adjnode));
                  } 
             }
       }
@@ -73,27 +89,13 @@ bool Graph<T>::check(string source, string destination)
     // int count = 0;
     // for (auto it = path.begin(); it != path.end(); ++it)
     // {
-    //     if(*it==source) count++
-    //     else if(*it==dest) count++;
+    //     if(*it==source) count++;
+    //     else if(*it==destination) count++;
     // }
     // if(count == 2) return true;
     // else return false;
-    for (char& c : source) 
-    {  
-        if(!isalpha(static_cast<unsigned char>(c)))
-        {
-            return false;
-        }
-        c = tolower(c);
-    }
-    for (char& c : destination) 
-    {
-        if(!isalpha(static_cast<unsigned char>(c)))
-        {
-            return false;
-        }
-        c = tolower(c);
-    }
+
+    cout<<"check"<<source<<" "<<destination<<endl;
     return (stops.find(source)!=stops.end() && stops.find(destination)!=stops.end());
     
 }
@@ -192,18 +194,28 @@ int main(){
 
     
     cout<<"Enter source station: ";
-    getline(cin,src);
+    getline(cin,source);
     cout<<endl;
+    for (auto& x : source) { 
+        x = tolower(x); 
+    } 
+    cout<<source<<endl;
+    
 
     cout<<"Enter destination station: ";
-    getline(cin,dest);
+    getline(cin,destination);
+    for (auto& x : destination) { 
+        x = tolower(x); 
+    } 
+    cout<<destination<<endl;
     
-    if(Metro.check(src,dest))
+    cout<<"\n\n";
+    if(Metro.check(source,destination))
     {
-        Metro.dijsktra(src, dist, prev);
-        cout<<"Distance from "<<src<<" station to "<<dest<<" station - "<<dist[dest]<<" Kms"<<endl;
+        Metro.dijsktra(source, dist, prev);
+        cout<<"Distance from "<<source<<" station to "<<destination<<" station - "<<dist[destination]<<" Kms"<<endl;
         cout<<endl<<"\t\tPath: "<<endl;
-        Metro.Path(dest,prev);
+        Metro.Path(destination,prev);
         cout<<endl;
     }
     else
